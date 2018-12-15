@@ -15,8 +15,8 @@ import cv2
 from darknet.yolov3 import Yolov3
 
 obj_detector = Yolov3()
-im = cv2.imread(f"{os.getcwd()}/data/dog.jpg")
-detected_objects = obj_detector.detect_image(f"{os.getcwd()}/data/dog.jpg")
+im = cv2.imread("traffic.jpg")
+detected_objects = obj_detector.detect_image("traffic.jpg")
 
 for obj in detected_objects:
     Yolov3.draw_bboxes(im, obj)
