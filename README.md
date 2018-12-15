@@ -7,6 +7,16 @@ For more information see the [Darknet project website](http://pjreddie.com/darkn
 
 For questions or issues please use the [Google Group](https://groups.google.com/forum/#!forum/darknet).
 
+## Installation
+```bash
+cd yolov3
+make
+mkdir weight
+cd weight
+wget https://pjreddie.com/media/files/yolov3.weights
+cd ../../
+```
+
 ## Example
 ```python
 from yolov3.yolov3 import Yolov3
