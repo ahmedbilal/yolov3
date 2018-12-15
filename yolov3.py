@@ -170,7 +170,7 @@ class Yolov3(object):
         # with Darknet we need to convert/encode our strings to ASCII.
 
         cfg_file = f"{Yolov3.REPO_ROOT}/cfg/yolov3.cfg".encode("ascii")
-        weight_file = f"{os.path.dirname(Yolov3.REPO_ROOT)}/yolov3.weights".encode("ascii")
+        weight_file = f"{Yolov3.REPO_ROOT}/weight/yolov3.weights".encode("ascii")
 
         self.net = Yolov3.load_net(cfg_file, weight_file, 0)
         self.meta = Yolov3.load_meta(f"{Yolov3.REPO_ROOT}/cfg/coco.data".encode("ascii"))
@@ -197,13 +197,13 @@ class Yolov3(object):
                       (detected_object.xa, detected_object.ya),
                       (detected_object.xb, detected_object.yb),
                       (0, 255, 0),
-                      5)
+                      3)
 
 
 if __name__ == "__main__":
     obj_detector = Yolov3()
-    im = cv2.imread(f"{os.getcwd()}/data/dog.jpg")
-    detected_objects = obj_detector.detect_image(f"{os.getcwd()}/data/dog.jpg")
+    im = cv2.imread(f"{Yolov3.REPO_ROOT}/data/dog.jpg")
+    detected_objects = obj_detector.detect_image(f"{Yolov3.REPO_ROOT}/data/dog.jpg")
 
     for obj in detected_objects:
         Yolov3.draw_bboxes(im, obj)

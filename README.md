@@ -9,19 +9,15 @@ For questions or issues please use the [Google Group](https://groups.google.com/
 
 ## Example
 ```python
-import os
+from yolov3.yolov3 import Yolov3
 import cv2
 
-from darknet.yolov3 import Yolov3
-
+image = cv2.imread("traffic.jpg")
 obj_detector = Yolov3()
-im = cv2.imread("traffic.jpg")
 detected_objects = obj_detector.detect_image("traffic.jpg")
-
 for obj in detected_objects:
-    Yolov3.draw_bboxes(im, obj)
-
-cv2.imshow("Image", im)
+    Yolov3.draw_bboxes(image, obj)
+cv2.imshow("image", image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 ```
