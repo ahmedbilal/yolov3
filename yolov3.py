@@ -50,13 +50,28 @@ class METADATA(Structure):
 
 
 class DetectedObject(object):
-    def __init__(self, _type, _probability, _xa, _ya, _xb, _yb):
+    def __init__(self, _type, _probability, _x, _y, _w, _h):
         self.type = _type
         self.probability = _probability
-        self.xa = _xa
-        self.ya = _ya
-        self.xb = _xb
-        self.yb = _yb
+        self.x = _x
+        self.y = _y
+        self.w = _w
+        self.h = _h
+
+    def xa(self):
+        return self.x
+
+    def ya(self):
+        return self.y
+
+    def xb(self):
+        return self.x + self.w
+
+    def yb(self):
+        return self.y + self.h
+
+    def bbox(self):
+        return self.x, self.y, self.x + self.w, self.y + self.h
 
 
 class Yolov3(object):
@@ -179,23 +194,26 @@ class Yolov3(object):
         r = Yolov3.detect(self.net, self.meta, input_image.encode("ascii"))
         detected_obj_list = []
         for detected_obj in r:
-            _x = detected_obj[2][0]
-            _y = detected_obj[2][1]
-            _w = detected_obj[2][2]
-            _h = detected_obj[2][3]
+            _type = detected_obj[0]
 
-            _obj = DetectedObject(str(detected_obj[0]), detected_obj[1],
-                                  int(_x - _w / 2), int(_y - _h / 2),
-                                  int(_x + _w / 2), int(_y + _h / 2)
-                                  )
+            _cx = int(detected_obj[2][0])
+            _cy = int(detected_obj[2][1])
+            _w = int(detected_obj[2][2])
+            _h = int(detected_obj[2][3])
+            _x = int(_cx - _w / 2)
+            _y = int(_cy - _h / 2)
+
+            _obj = DetectedObject(_type=_type, _probability=detected_obj[1],
+                                  _x=_x, _y=_y, _w=_w, _h=_h)
+
             detected_obj_list.append(_obj)
         return detected_obj_list
 
     @staticmethod
     def draw_bboxes(_image, detected_object):
         cv2.rectangle(_image,
-                      (detected_object.xa, detected_object.ya),
-                      (detected_object.xb, detected_object.yb),
+                      (detected_object.xa(), detected_object.ya()),
+                      (detected_object.xb(), detected_object.yb()),
                       (0, 255, 0),
                       3)
 
