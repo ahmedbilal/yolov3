@@ -53,10 +53,17 @@ class DetectedObject(object):
     def __init__(self, _type, _probability, _x, _y, _w, _h):
         self.type = _type
         self.probability = _probability
+        self.tracker = None
         self.x = _x
         self.y = _y
         self.w = _w
         self.h = _h
+
+    def cx(self):
+        return int((self.xa() + self.xb()) / 2)
+
+    def cy(self):
+        return int((self.ya() + self.yb()) / 2)
 
     def xa(self):
         return self.x
@@ -70,8 +77,14 @@ class DetectedObject(object):
     def yb(self):
         return self.y + self.h
 
+    def pt_a(self):
+        return self.xa(), self.ya()
+
+    def pt_b(self):
+        return self.xb(), self.yb()
+
     def bbox(self):
-        return self.x, self.y, self.x + self.w, self.y + self.h
+        return self.xa(), self.ya(), self.xb(), self.yb()
 
 
 class Yolov3(object):
